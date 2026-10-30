@@ -11,5 +11,10 @@
       "source": "/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "no-store" }]
     }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "^/api/(.*)$", "dest": "/api/[...p]?...p=$1" },
+    { "src": "^/(.*)$", "dest": "/index.html" }
   ]
 }
