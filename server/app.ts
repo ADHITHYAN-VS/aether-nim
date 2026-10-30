@@ -1,4 +1,4 @@
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import type { GraphMetrics, RecoveryAction, TopologySnapshot, IncidentReport, RecoveryOutcome } from '../engine/types.js';
 import { Twin } from '../engine/store.js';
 import { NebiusAdapter, DEFAULT_BASE_URL } from '../engine/ai.js';
@@ -41,7 +41,7 @@ export function createApp(env: EnvConfig): Hono {
    * with the server-held key. Lets a pure-static front end keep real inference
    * without ever shipping a credential to the browser.
    */
-  app.post('/ai/*', async (c) => {
+  async function proxyAI(c: Context): Promise<Response> {
     if (!ai.enabled()) return c.json({ error: 'model proxy not configured' }, 503);
     const base = (env.NEBIUS_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '');
     let upstream: globalThis.Response;
@@ -58,7 +58,10 @@ export function createApp(env: EnvConfig): Hono {
       status: upstream.status,
       headers: { 'Content-Type': upstream.headers.get('Content-Type') ?? 'application/json', 'Cache-Control': 'no-store' },
     });
-  });
+  }
+  // Same proxy reachable at both prefixes (browser callers use /api/ai).
+  app.post('/ai/*', proxyAI);
+  app.post('/api/ai/*', proxyAI);
 
   app.get('/health', (c) => c.json({
     status: 'ok',
