@@ -1,0 +1,15 @@
+name = "aether-nim"
+main = "dist/worker.js"
+compatibility_date = "2026-09-24"
+
+[assets]
+directory = "./web/dist"
+binding = "ASSETS"
+
+[observability]
+enabled = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aether-nim"
+database_id = "00000000-0000-0000-0000-000000000000"

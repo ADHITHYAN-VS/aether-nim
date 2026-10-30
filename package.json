@@ -1,0 +1,39 @@
+{
+  "name": "aether-nim",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "AETHER-NIM — an autonomous spectral network resilience and self-healing digital twin",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "tsx watch server/local.ts",
+    "dev:web": "vite --config web/vite.config.ts",
+    "build": "npm run build:web && npm run build:worker",
+    "build:web": "vite build --config web/vite.config.ts",
+    "build:worker": "esbuild worker/index.ts --bundle --platform=neutral --format=esm --outfile=dist/worker.js --external:*.wasm --minify",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "bench": "tsx benchmarks/run.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.5",
+    "hono": "^4.13.14"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "cytoscape": "^3.34.4",
+    "esbuild": "^0.28.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.156.0"
+  }
+}
