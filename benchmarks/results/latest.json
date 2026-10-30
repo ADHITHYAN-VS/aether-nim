@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-29T18:52:29.204Z",
-  "totalMs": 98,
+  "generatedAt": "2026-10-30T08:21:40.381Z",
+  "totalMs": 150,
   "environment": {
     "platform": "win32",
     "node": "v22.17.1"
@@ -11,7 +11,7 @@
       "cases": 9,
       "verified": 9,
       "avgActions": 2.7,
-      "avgPlanMs": 4
+      "avgPlanMs": 6
     },
     {
       "strategy": "restore-all-failed",
@@ -25,7 +25,7 @@
       "cases": 9,
       "verified": 9,
       "avgActions": 2.3,
-      "avgPlanMs": 4
+      "avgPlanMs": 7
     }
   ],
   "rows": [
@@ -41,7 +41,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 9,
+      "planMs": 19,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 1 action(s) to minimize J."
     },
@@ -72,7 +72,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 9
+      "planMs": 15
     },
     {
       "scenario": "bridge-failure",
@@ -89,7 +89,7 @@
         "RestoreEdge:t2"
       ],
       "actionCount": 4,
-      "planMs": 5,
+      "planMs": 6,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 4 action(s) to minimize J."
     },
@@ -126,7 +126,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 4,
-      "planMs": 7
+      "planMs": 8
     },
     {
       "scenario": "bridge-failure",
@@ -142,7 +142,7 @@
         "OpenCandidate:x2"
       ],
       "actionCount": 3,
-      "planMs": 2,
+      "planMs": 4,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 3 action(s) to minimize J."
     },
@@ -174,7 +174,7 @@
         "OpenCandidate:x2"
       ],
       "actionCount": 2,
-      "planMs": 3
+      "planMs": 2
     },
     {
       "scenario": "cascading-degradation",
@@ -236,7 +236,7 @@
         "RestoreEdge:t2"
       ],
       "actionCount": 4,
-      "planMs": 4,
+      "planMs": 3,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 4 action(s) to minimize J."
     },
@@ -321,7 +321,7 @@
         "OpenCandidate:x2"
       ],
       "actionCount": 2,
-      "planMs": 3
+      "planMs": 6
     },
     {
       "scenario": "capacity-constrained",
@@ -335,7 +335,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 2,
+      "planMs": 3,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 1 action(s) to minimize J."
     },
@@ -366,7 +366,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 3
+      "planMs": 2
     },
     {
       "scenario": "capacity-constrained",
@@ -383,7 +383,7 @@
         "RestoreEdge:t2"
       ],
       "actionCount": 4,
-      "planMs": 4,
+      "planMs": 8,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 4 action(s) to minimize J."
     },
@@ -420,7 +420,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 4,
-      "planMs": 5
+      "planMs": 13
     },
     {
       "scenario": "capacity-constrained",
@@ -436,7 +436,7 @@
         "OpenCandidate:x2"
       ],
       "actionCount": 3,
-      "planMs": 2,
+      "planMs": 3,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 3 action(s) to minimize J."
     },
@@ -468,7 +468,7 @@
         "OpenCandidate:x2"
       ],
       "actionCount": 2,
-      "planMs": 2
+      "planMs": 5
     }
   ]
 }
