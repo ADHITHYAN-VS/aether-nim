@@ -9,7 +9,7 @@ const app = createApp({
   // Truthy key so the AI adapter activates; every model call is proxied via the
   // same-origin /ai route (the real credential lives server-side only).
   NEBIUS_API_KEY: 'browser-via-proxy',
-  NEBIUS_BASE_URL: '/ai',
+  NEBIUS_BASE_URL: '/api/ai',
 });
 
 async function request(path: string, init: { method: string; body?: string }): Promise<Response> {
