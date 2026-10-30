@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1526"/>
+      <stop offset="1" stop-color="#0a0f1d"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="240" height="240" rx="52" fill="url(#bg)"/>
+  <rect x="0" y="0" width="240" height="240" rx="52" fill="none" stroke="#22d3ee" stroke-opacity="0.35" stroke-width="2"/>
+  <!-- mesh -->
+  <g stroke="#3b5a78" stroke-width="2" stroke-opacity="0.9">
+    <line x1="120" y1="120" x2="120" y2="56"/>
+    <line x1="120" y1="120" x2="172" y2="88"/>
+    <line x1="120" y1="120" x2="172" y2="152"/>
+    <line x1="120" y1="120" x2="120" y2="184"/>
+    <line x1="120" y1="120" x2="68"  y2="152"/>
+    <line x1="120" y1="120" x2="68"  y2="88"/>
+    <line x1="120" y1="56"  x2="172" y2="88"/>
+    <line x1="172" y1="88"  x2="172" y2="152"/>
+    <line x1="172" y1="152" x2="120" y2="184"/>
+    <line x1="120" y1="184" x2="68"  y2="152"/>
+    <line x1="68"  y1="152" x2="68"  y2="88"/>
+    <line x1="68"  y1="88"  x2="120" y2="56"/>
+  </g>
+  <!-- outer nodes -->
+  <g fill="#93a7bd">
+    <circle cx="120" cy="56"  r="7"/>
+    <circle cx="172" cy="88"  r="7"/>
+    <circle cx="172" cy="152" r="7"/>
+    <circle cx="120" cy="184" r="7"/>
+    <circle cx="68"  cy="152" r="7"/>
+    <circle cx="68"  cy="88"  r="7"/>
+  </g>
+  <!-- broken outer link to show failure -->
+  <circle cx="172" cy="152" r="10" fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="3 3"/>
+  <!-- central node -->
+  <circle cx="120" cy="120" r="22" fill="#0d1526" stroke="#22d3ee" stroke-width="4"/>
+  <circle cx="120" cy="120" r="10" fill="#22d3ee" filter="url(#glow)"/>
+</svg>

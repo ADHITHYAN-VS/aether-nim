@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1526"/>
+      <stop offset="1" stop-color="#0a0f1d"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#f87171"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#22d3ee" fill-opacity="0.85"/>
+  <text x="40" y="66" font-size="30" font-weight="700" fill="#e8eef6" letter-spacing="1">The closed loop</text>
+  <text x="40" y="96" font-size="20" fill="#6b7f95" letter-spacing="0.5">every arrow is re-validated against the live graph &#8212; nothing ships on the AI&#8217;s word alone</text>
+
+  <!-- row 1 -->
+  <g font-size="21" font-weight="700" text-anchor="middle">
+    <rect x="40"  y="150" width="256" height="88" rx="14" fill="#122436" stroke="#22d3ee" stroke-opacity="0.5"/>
+    <text x="168" y="186" fill="#67e8f9">MEASURE</text>
+    <text x="168" y="216" font-size="16" font-weight="400" fill="#93a7bd">scheduler tick &#8594; &#955;&#8322;,&#160;components</text>
+
+    <rect x="346" y="150" width="236" height="88" rx="14" fill="#122436" stroke="#22d3ee" stroke-opacity="0.5"/>
+    <text x="464" y="186" fill="#67e8f9">DETECT</text>
+    <text x="464" y="216" font-size="16" font-weight="400" fill="#93a7bd">incident rules on the live graph</text>
+
+    <rect x="632" y="150" width="290" height="88" rx="14" fill="#0f2a22" stroke="#34d399" stroke-opacity="0.55"/>
+    <text x="777" y="186" fill="#6ee7b7">DIAGNOSE + TAVILY</text>
+    <text x="777" y="216" font-size="16" font-weight="400" fill="#9db8a8">Nemotron: strict JSON + web evidence</text>
+
+    <rect x="972" y="150" width="268" height="88" rx="14" fill="#0f2a22" stroke="#34d399" stroke-opacity="0.55"/>
+    <text x="1106" y="186" fill="#6ee7b7">PROPOSE</text>
+    <text x="1106" y="216" font-size="16" font-weight="400" fill="#9db8a8">validate each action vs live world</text>
+  </g>
+  <g stroke="#22d3ee" stroke-width="2.5" fill="none" marker-end="url(#arr)">
+    <line x1="296" y1="194" x2="340" y2="194"/>
+    <line x1="582" y1="194" x2="626" y2="194"/>
+    <line x1="922" y1="194" x2="966" y2="194"/>
+  </g>
+
+  <!-- row 2 -->
+  <g font-size="21" font-weight="700" text-anchor="middle">
+    <rect x="40" y="330" width="256" height="88" rx="14" fill="#23220f" stroke="#fbbf24" stroke-opacity="0.55"/>
+    <text x="168" y="366" fill="#fcd34d">DECIDE</text>
+    <text x="168" y="396" font-size="16" font-weight="400" fill="#cbb27c">greedy J-objective on clone graph</text>
+
+    <rect x="346" y="330" width="236" height="88" rx="14" fill="#23220f" stroke="#fbbf24" stroke-opacity="0.55"/>
+    <text x="464" y="366" fill="#fcd34d">EXECUTE</text>
+    <text x="464" y="396" font-size="16" font-weight="400" fill="#cbb27c">apply &#215;N, re-validated each step</text>
+
+    <rect x="632" y="330" width="290" height="88" rx="14" fill="#101b2c" stroke="#22d3ee" stroke-opacity="0.7"/>
+    <text x="777" y="366" fill="#67e8f9">VERIFY (independent)</text>
+    <text x="777" y="396" font-size="16" font-weight="400" fill="#93a7bd">recompute metrics from scratch &#8594; pass or rollback</text>
+
+    <rect x="972" y="330" width="268" height="88" rx="14" fill="#1b1216" stroke="#f87171" stroke-opacity="0.6"/>
+    <text x="1106" y="366" fill="#fca5a5">ROLLBACK</text>
+    <text x="1106" y="396" font-size="16" font-weight="400" fill="#c39a9a">inverse actions, plan does not ship</text>
+  </g>
+  <g stroke="#22d3ee" stroke-width="2.5" fill="none" marker-end="url(#arr)">
+    <line x1="296" y1="374" x2="340" y2="374"/>
+    <line x1="582" y1="374" x2="626" y2="374"/>
+  </g>
+  <!-- verify -> rollback -->
+  <g stroke="#f87171" stroke-width="2.5" fill="none" marker-end="url(#arrr)">
+    <line x1="922" y1="374" x2="966" y2="374"/>
+  </g>
+  <text x="944" y="360" font-size="15" fill="#fca5a5" text-anchor="middle" font-weight="600">&#215;</text>
+  <text x="944" y="398" font-size="12" fill="#fca5a5" text-anchor="middle">fail</text>
+
+  <!-- loop back: verify/rollback to measure -->
+  <g stroke="#22d3ee" stroke-width="2" stroke-dasharray="6 6" fill="none" marker-end="url(#arr)" opacity="0.9">
+    <path d="M1236 418 L1236 500 L168 500 L168 452"/>
+  </g>
+  <text x="660" y="492" font-size="17" fill="#67e8f9" text-anchor="middle" letter-spacing="0.5">the loop repeats until the world is provably restored</text>
+
+  <!-- objective line -->
+  <g>
+    <rect x="40" y="560" width="1200" height="52" rx="12" fill="#111d2f" stroke="#818cf8" stroke-opacity="0.35"/>
+    <text x="58" y="592" font-size="19" fill="#a5b4fc">Objective J = 0.01&#183;avgLatency + 400&#183;unmetShare + 500&#183;extraComponents + 50&#183;&#916;&#955;&#8322; + &#931; repair costs &#8212; routed on the clone before scoring</text>
+  </g>
+</svg>
