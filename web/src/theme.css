@@ -63,6 +63,10 @@ button.primary:hover { background: rgba(34,211,238,.12); }
 /* main grid */
 .main { display: grid; grid-template-columns: 1.7fr 1fr; gap: 0; flex: 1; min-height: 0; }
 .col { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.col:last-child { overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.col:last-child::-webkit-scrollbar { width: 8px; }
+.col:last-child::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+.col:last-child::-webkit-scrollbar-track { background: transparent; }
 .graph-col { border-right: 1px solid var(--line); }
 
 .panel { padding: 10px 14px; border-bottom: 1px solid var(--line); }

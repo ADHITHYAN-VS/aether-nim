@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T08:21:40.381Z",
-  "totalMs": 150,
+  "generatedAt": "2026-10-30T13:48:58.636Z",
+  "totalMs": 136,
   "environment": {
     "platform": "win32",
     "node": "v22.17.1"
@@ -11,7 +11,7 @@
       "cases": 9,
       "verified": 9,
       "avgActions": 2.7,
-      "avgPlanMs": 6
+      "avgPlanMs": 5
     },
     {
       "strategy": "restore-all-failed",
@@ -25,7 +25,7 @@
       "cases": 9,
       "verified": 9,
       "avgActions": 2.3,
-      "avgPlanMs": 7
+      "avgPlanMs": 6
     }
   ],
   "rows": [
@@ -41,7 +41,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 19,
+      "planMs": 15,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 1 action(s) to minimize J."
     },
@@ -72,7 +72,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 15
+      "planMs": 10
     },
     {
       "scenario": "bridge-failure",
@@ -89,7 +89,7 @@
         "RestoreEdge:t2"
       ],
       "actionCount": 4,
-      "planMs": 6,
+      "planMs": 5,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 4 action(s) to minimize J."
     },
@@ -126,7 +126,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 4,
-      "planMs": 8
+      "planMs": 7
     },
     {
       "scenario": "bridge-failure",
@@ -174,7 +174,7 @@
         "OpenCandidate:x2"
       ],
       "actionCount": 2,
-      "planMs": 2
+      "planMs": 6
     },
     {
       "scenario": "cascading-degradation",
@@ -188,7 +188,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 2,
+      "planMs": 4,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 1 action(s) to minimize J."
     },
@@ -219,7 +219,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 1,
-      "planMs": 2
+      "planMs": 3
     },
     {
       "scenario": "cascading-degradation",
@@ -236,7 +236,7 @@
         "RestoreEdge:t2"
       ],
       "actionCount": 4,
-      "planMs": 3,
+      "planMs": 4,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 4 action(s) to minimize J."
     },
@@ -273,7 +273,7 @@
         "RestoreEdge:t4"
       ],
       "actionCount": 4,
-      "planMs": 6
+      "planMs": 8
     },
     {
       "scenario": "cascading-degradation",
@@ -289,7 +289,7 @@
         "OpenCandidate:x2"
       ],
       "actionCount": 3,
-      "planMs": 2,
+      "planMs": 3,
       "rollback": false,
       "notes": "Deterministic greedy optimizer selected 3 action(s) to minimize J."
     },
@@ -309,153 +309,6 @@
     },
     {
       "scenario": "cascading-degradation",
-      "preset": "capacity-constrained",
-      "strategy": "greedy-no-lookahead (baseline)",
-      "damagedServedPct": 21.7,
-      "servedPct": 100,
-      "rerouted": true,
-      "isolated": 0,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t4",
-        "OpenCandidate:x2"
-      ],
-      "actionCount": 2,
-      "planMs": 6
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "bridge-failure",
-      "strategy": "objJ-plan (ours)",
-      "damagedServedPct": 21.7,
-      "servedPct": 100,
-      "rerouted": true,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t4"
-      ],
-      "actionCount": 1,
-      "planMs": 3,
-      "rollback": false,
-      "notes": "Deterministic greedy optimizer selected 1 action(s) to minimize J."
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "bridge-failure",
-      "strategy": "restore-all-failed (baseline)",
-      "damagedServedPct": 21.7,
-      "servedPct": 100,
-      "rerouted": true,
-      "isolated": 0,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t4"
-      ],
-      "actionCount": 1
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "bridge-failure",
-      "strategy": "greedy-no-lookahead (baseline)",
-      "damagedServedPct": 21.7,
-      "servedPct": 100,
-      "rerouted": true,
-      "isolated": 0,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t4"
-      ],
-      "actionCount": 1,
-      "planMs": 2
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "cascading-degradation",
-      "strategy": "objJ-plan (ours)",
-      "damagedServedPct": 12,
-      "servedPct": 100,
-      "rerouted": true,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t1",
-        "RestoreNode:e-c1",
-        "RestoreEdge:t4",
-        "RestoreEdge:t2"
-      ],
-      "actionCount": 4,
-      "planMs": 8,
-      "rollback": false,
-      "notes": "Deterministic greedy optimizer selected 4 action(s) to minimize J."
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "cascading-degradation",
-      "strategy": "restore-all-failed (baseline)",
-      "damagedServedPct": 12,
-      "servedPct": 100,
-      "rerouted": true,
-      "isolated": 0,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t1",
-        "RestoreEdge:t2",
-        "RestoreEdge:t4",
-        "RestoreNode:e-c1"
-      ],
-      "actionCount": 4
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "cascading-degradation",
-      "strategy": "greedy-no-lookahead (baseline)",
-      "damagedServedPct": 12,
-      "servedPct": 100,
-      "rerouted": true,
-      "isolated": 0,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t1",
-        "OpenCandidate:x1",
-        "RestoreNode:e-c1",
-        "RestoreEdge:t4"
-      ],
-      "actionCount": 4,
-      "planMs": 13
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "capacity-constrained",
-      "strategy": "objJ-plan (ours)",
-      "damagedServedPct": 21.7,
-      "servedPct": 100,
-      "rerouted": true,
-      "verified": true,
-      "actions": [
-        "RestoreEdge:t4",
-        "OpenCandidate:x1",
-        "OpenCandidate:x2"
-      ],
-      "actionCount": 3,
-      "planMs": 3,
-      "rollback": false,
-      "notes": "Deterministic greedy optimizer selected 3 action(s) to minimize J."
-    },
-    {
-      "scenario": "capacity-constrained",
-      "preset": "capacity-constrained",
-      "strategy": "restore-all-failed (baseline)",
-      "damagedServedPct": 21.7,
-      "servedPct": 75.9,
-      "rerouted": false,
-      "isolated": 0,
-      "verified": false,
-      "actions": [
-        "RestoreEdge:t4"
-      ],
-      "actionCount": 1
-    },
-    {
-      "scenario": "capacity-constrained",
       "preset": "capacity-constrained",
       "strategy": "greedy-no-lookahead (baseline)",
       "damagedServedPct": 21.7,
@@ -469,6 +322,153 @@
       ],
       "actionCount": 2,
       "planMs": 5
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "bridge-failure",
+      "strategy": "objJ-plan (ours)",
+      "damagedServedPct": 21.7,
+      "servedPct": 100,
+      "rerouted": true,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t4"
+      ],
+      "actionCount": 1,
+      "planMs": 4,
+      "rollback": false,
+      "notes": "Deterministic greedy optimizer selected 1 action(s) to minimize J."
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "bridge-failure",
+      "strategy": "restore-all-failed (baseline)",
+      "damagedServedPct": 21.7,
+      "servedPct": 100,
+      "rerouted": true,
+      "isolated": 0,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t4"
+      ],
+      "actionCount": 1
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "bridge-failure",
+      "strategy": "greedy-no-lookahead (baseline)",
+      "damagedServedPct": 21.7,
+      "servedPct": 100,
+      "rerouted": true,
+      "isolated": 0,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t4"
+      ],
+      "actionCount": 1,
+      "planMs": 4
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "cascading-degradation",
+      "strategy": "objJ-plan (ours)",
+      "damagedServedPct": 12,
+      "servedPct": 100,
+      "rerouted": true,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t1",
+        "RestoreNode:e-c1",
+        "RestoreEdge:t4",
+        "RestoreEdge:t2"
+      ],
+      "actionCount": 4,
+      "planMs": 7,
+      "rollback": false,
+      "notes": "Deterministic greedy optimizer selected 4 action(s) to minimize J."
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "cascading-degradation",
+      "strategy": "restore-all-failed (baseline)",
+      "damagedServedPct": 12,
+      "servedPct": 100,
+      "rerouted": true,
+      "isolated": 0,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t1",
+        "RestoreEdge:t2",
+        "RestoreEdge:t4",
+        "RestoreNode:e-c1"
+      ],
+      "actionCount": 4
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "cascading-degradation",
+      "strategy": "greedy-no-lookahead (baseline)",
+      "damagedServedPct": 12,
+      "servedPct": 100,
+      "rerouted": true,
+      "isolated": 0,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t1",
+        "OpenCandidate:x1",
+        "RestoreNode:e-c1",
+        "RestoreEdge:t4"
+      ],
+      "actionCount": 4,
+      "planMs": 8
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "capacity-constrained",
+      "strategy": "objJ-plan (ours)",
+      "damagedServedPct": 21.7,
+      "servedPct": 100,
+      "rerouted": true,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t4",
+        "OpenCandidate:x1",
+        "OpenCandidate:x2"
+      ],
+      "actionCount": 3,
+      "planMs": 2,
+      "rollback": false,
+      "notes": "Deterministic greedy optimizer selected 3 action(s) to minimize J."
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "capacity-constrained",
+      "strategy": "restore-all-failed (baseline)",
+      "damagedServedPct": 21.7,
+      "servedPct": 75.9,
+      "rerouted": false,
+      "isolated": 0,
+      "verified": false,
+      "actions": [
+        "RestoreEdge:t4"
+      ],
+      "actionCount": 1
+    },
+    {
+      "scenario": "capacity-constrained",
+      "preset": "capacity-constrained",
+      "strategy": "greedy-no-lookahead (baseline)",
+      "damagedServedPct": 21.7,
+      "servedPct": 100,
+      "rerouted": true,
+      "isolated": 0,
+      "verified": true,
+      "actions": [
+        "RestoreEdge:t4",
+        "OpenCandidate:x2"
+      ],
+      "actionCount": 2,
+      "planMs": 3
     }
   ]
 }

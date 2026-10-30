@@ -95,6 +95,28 @@ export function createApp(env: EnvConfig): Hono {
   const app = new Hono();
 
   /**
+   * CORS preflight: the API is a stateless proxy with no server-held session,
+   * so cross-origin reads are safe; OPTIONS was previously unhandled (404),
+   * which breaks cross-origin POST callers (e.g. judge tooling / other origins).
+   * Same-origin usage is unaffected — browsers skip preflight there.
+   */
+  app.use('*', async (c, next) => {
+    const p = c.req.path.replace(/^\/api/, '');
+    const allowed = p === '/health' || p.startsWith('/ai') || p.startsWith('/web');
+    if (c.req.method === 'OPTIONS') {
+      if (!allowed) return c.body(null, 404);
+      return c.body(null, 204, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Max-Age': '86400',
+      });
+    }
+    await next();
+    if (allowed) c.header('Access-Control-Allow-Origin', '*');
+  });
+
+  /**
    * Stateless model proxy: forwards a Token Factory /chat/completions request
    * with the server-held key. Lets a pure-static front end keep real inference
    * without ever shipping a credential to the browser.

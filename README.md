@@ -68,8 +68,8 @@ At diagnosis time the twin makes a **runtime call to the Tavily Search API** —
 
 | Strategy | Plans verified | Restored service (avg) | Plan time (avg) | Actions |
 |---|:---:|:---:|:---:|:---:|
-| **`objJ-plan` (ours — AI-advised, engine-verified)** | **9/9** | **100%** | **6 ms** | 2.7 |
-| `greedy-no-lookahead (baseline)` | 9/9 | 100% | 7 ms | 2.3 |
+| **`objJ-plan` (ours — AI-advised, engine-verified)** | **9/9** | **100%** | **5 ms** | 2.7 |
+| `greedy-no-lookahead (baseline)` | 9/9 | 100% | 6 ms | 2.3 |
 | `restore-all-failed (baseline)` | **6/9** | 92% | — | 2.0 |
 
 Baseline service at injection time is **18.5%** across the suite — the network is *actually broken* in every case before the planner sees it. `objJ-plan` never ships an unverified plan; the naive "just restore everything" baseline ships three plans that fail verification.

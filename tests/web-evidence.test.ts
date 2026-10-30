@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { Twin, type WebSearchHook } from '../engine/store.js';
-import type { AIPrompt, AIResult, AIAdapter } from '../engine/ai.js';
+import type { AIResult, AIAdapter } from '../engine/ai.js';
+import type { AIPrompt } from '../engine/types.js';
 import type { NetworkWorld } from '../engine/graph.js';
 import type { WebEvidenceItem } from '../engine/types.js';
 

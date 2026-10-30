@@ -3,7 +3,7 @@
 Run in order; every step has been executed at least once with exit code 0.
 
 - [x] `npm run typecheck` — clean
-- [x] `npm test` — 20 tests green (unit / integration / resilience)
+- [x] `npm test` — 23 tests green (unit / integration / resilience / web-grounding)
 - [x] `npm run bench` — 18-case report written to `benchmarks/results/latest.json`
 - [x] `npm run build` — web + serverless API bundles produced
 - [x] Local API smoke test — `/health`, both `/ai/*` and `/api/ai/*` proxy paths → HTTP 200 from Nebius
@@ -17,7 +17,7 @@ Run in order; every step has been executed at least once with exit code 0.
 - [x] No secrets in the repo (`.secrets/`, `.env` gitignored); no third-party platform names in docs
 
 ## Devpost
-- [ ] repo URL (`www github…`)
-- [ ] live demo URL (production, above)
-- [ ] demo video link (YouTube, unlisted allowed)
-- [ ] "Built with" list
+- [x] repo URL (github.com/ADHITHYAN-VS/aether-nim)
+- [x] live demo URL (production, above)
+- [x] demo video link (YouTube, unlisted allowed — https://youtu.be/hqNuCS9_6tc)
+- [x] "Built with" list
