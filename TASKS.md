@@ -4,7 +4,7 @@ Format: [ ] open | [x] done | [~] partial — update after each milestone.
 
 ## P0 compliance & skeleton
 - [x] verify rules (research): Nebius runtime call + NVIDIA open model; video<3min; repo w/ license; equal-weight judging
-- [x] environment inspected (Win, Node 22, no Python; Sites deploy available)
+- [x] environment inspected (Win, Node 22, no Python; Vercel deploy available)
 - [ ] runnable skeleton (worker /health + minimal engine mounted)
 - [ ] scenario data pack (three named scenarios, seeded)
 
@@ -33,7 +33,7 @@ Format: [ ] open | [x] done | [~] partial — update after each milestone.
 ## P4 validation & deploy
 - [ ] vitest suite + API integration tests pass
 - [ ] benchmark suite → benchmarks/results-*.json
-- [ ] Sites deploy + external check of live URL
+- [ ] Vercel deploy + external check of live URL
 - [ ] clean repo: README (16 required sections), LICENSE (MIT), .env.example, .gitignore
 
 ## P5 submission & video

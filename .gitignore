@@ -3,17 +3,11 @@ dist/
 web/dist/
 .env
 .env.local
-secrets/
-*.log
-.wrangler/
-
-.secrets/
-.freebuff/
 .wrangler/
 .tshy/
-
+.secrets/
+*.log
 .vercel
-.env*
 
 api/[...p].js
 api/[[...p]].cjs

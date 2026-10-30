@@ -48,23 +48,29 @@ Key invariants (enforced by tests):
 ```bash
 cp .env.example .env       # add your Nebius key (runs fine without one too)
 npm install
-npm run dev                # API on :3773 + Web on :5173
+npm run dev                # API on :8787 + Web on :5173
 npm test                   # 20 vitest suites (unit + integration + resilience)
 npm run bench              # 18-case benchmark vs scripted baselines
 ```
 
 ## Live demo
 
-Production & preview are deployed (see `web/dist` + `worker`): scan a preset,
-diagnose, recover, verify — the AI tier is *real* Nemotron on Nebius, not a mock.
+**Production:** https://aether-nim-vsadhithyan505-5634s-projects.vercel.app
+
+Deployed as a static dashboard plus one stateless serverless function: the whole
+twin (graph engine + API) ships in the page bundle, and the single `/api/ai`
+proxy keeps the Nebius credential server-side. Each viewer gets an isolated
+twin — click a damage preset, diagnose, recover, verify — the AI stage is
+*real* Nemotron on Nebius, not a mock.
 
 ## Files
 
 ```
 engine/     pure algorithms (graph, metrics, recovery, damage presets, AI adapter)
-server/     Hono API (app.ts), local Node entry, Workers D1 twin-store
+server/     Hono API (app.ts), local Node entry, Vercel serverless entry + bundled build
 web/        React + Cytoscape canvas dashboard (rank overlay, plan/verify visualization)
+            — embeds the engine, so the public demo needs zero server state
 benchmarks/ scenarios + baselines runner → JSON results
 scripts/    ai-integration-check.ts — end-to-end real-AI proof runner
-worker/     Cloudflare Workers entry with durable twin state
+worker/     optional edge-Workers entry with durable twin state (alternate host)
 ```

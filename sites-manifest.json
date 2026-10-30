@@ -1,9 +1,0 @@
-{
-  "entrypoint": "worker.js",
-  "compatibilityDate": "2026-09-24",
-  "modules": [
-    { "name": "worker.js", "type": "esm", "path": "./dist/worker.js" }
-  ],
-  "assetsDirectory": "./web/dist",
-  "spa": true
-}
