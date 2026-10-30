@@ -14,6 +14,7 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:8787',
       '/health': 'http://localhost:8787',
+      '/ai': 'http://localhost:8787',
     },
   },
 });

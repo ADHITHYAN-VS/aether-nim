@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import GraphCanvas from './GraphCanvas.js';
 import type { StateResponse, Metrics, AIInfo, TimelineEvent, RecoverySummary } from './types.js';
+import { state as embeddedState, post as embeddedPost } from './twinApi.js';
 
+/** Embedded-first twin: the engine runs in the browser, /ai proxies the model. */
 const API = {
-  async state(): Promise<StateResponse> { return fetch('/api/state').then((r) => r.json()); },
+  async state(): Promise<Response> { return embeddedState(); },
   async post(path: string, body?: unknown): Promise<Response> {
-    return fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    return embeddedPost(path, body);
   },
 };
 
@@ -21,7 +23,7 @@ export default function App() {
 
   const refresh = useCallback(async () => {
     try {
-      const s = await API.state();
+      const s = await (await API.state()).json() as StateResponse;
       setState(s);
     } catch { setErr('API unreachable — is the backend running?'); }
   }, []);

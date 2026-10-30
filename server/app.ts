@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import type { GraphMetrics, RecoveryAction, TopologySnapshot, IncidentReport, RecoveryOutcome } from '../engine/types.js';
 import { Twin } from '../engine/store.js';
-import { NebiusAdapter } from '../engine/ai.js';
+import { NebiusAdapter, DEFAULT_BASE_URL } from '../engine/ai.js';
 import { makeStoreAdapter } from './d1store.js';
 import { OBJECTIVE, actionCost, detectIncident } from '../engine/recovery.js';
 
@@ -35,6 +35,30 @@ export function createApp(env: EnvConfig): Hono {
   const saveTwin = (tw: Twin): Promise<void> => store.save(tw.serialize());
 
   const app = new Hono();
+
+  /**
+   * Stateless model proxy: forwards a Token Factory /chat/completions request
+   * with the server-held key. Lets a pure-static front end keep real inference
+   * without ever shipping a credential to the browser.
+   */
+  app.post('/ai/*', async (c) => {
+    if (!ai.enabled()) return c.json({ error: 'model proxy not configured' }, 503);
+    const base = (env.NEBIUS_BASE_URL || DEFAULT_BASE_URL).replace(/\/$/, '');
+    let upstream: globalThis.Response;
+    try {
+      upstream = await fetch(`${base}/chat/completions`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${env.NEBIUS_API_KEY}`, 'Content-Type': 'application/json' },
+        body: await c.req.text(),
+      });
+    } catch {
+      return c.json({ error: 'model proxy upstream failed' }, 502);
+    }
+    return new Response(upstream.body, {
+      status: upstream.status,
+      headers: { 'Content-Type': upstream.headers.get('Content-Type') ?? 'application/json', 'Cache-Control': 'no-store' },
+    });
+  });
 
   app.get('/health', (c) => c.json({
     status: 'ok',

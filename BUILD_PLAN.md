@@ -6,7 +6,7 @@ Status: ACTIVE — build started 2026-10-29 ~18:00 UTC; deadline 2026-10-30 17:0
 
 ## Environment (verified)
 - Windows host, Git Bash: Node 22.17 / npm 11.18 / git 2.55. **No Python.**
-- Freebuff Sites deploy platform available (Cloudflare Workers + static assets).
+- Vercel + Cloudflare Workers deploy targets available (static assets + serverless or edge ISOs).
 - No Nebius credentials in env yet → honest-fallback design until key supplied.
 
 ## Architecture
@@ -31,8 +31,8 @@ flowchart LR
 **P0 in flight:** scaffold, worker skeleton, scenario pack (three seeded scenarios), run `_local` health.
 **P1 next:** engine (union-find connectivity, Laplacian/Jacobi algebraic connectivity λ2, Brandes betweenness, cut edge detection, capacity feasible routing via SSP min-cost flow); typed action vocabulary {RestoreEdge, RestoreNode, OpenCandidate, Retune, Reroute}; verifier + rollback; greedy optimizer with lexicographic minimizing objective.
 **P2:** Nebius client (structured incident JSON → thin analysis message; correctness owned by deterministic engine), honest "verify" vs "AI" separation.
-**P3:** frontend demo scenario, gemini-grade trace mining, publish freebuff preview.
-**P4:** benchmarks (12 cases × deterministic seeds × baseline vs self-healing), deploy via Sites, real screenshot.
+**P3:** frontend demo scenario, gemini-grade trace mining, deploy a public preview.
+**P4:** benchmarks (12 cases × deterministic seeds × baseline vs self-healing), deploy via Vercel, real screenshot.
 **P5:** video script (YouTube must be <3min), Devpost draft, submit if possible.
 
 ## Open risks
