@@ -11,3 +11,6 @@ secrets/
 .freebuff/
 .wrangler/
 .tshy/
+
+.vercel
+.env*
