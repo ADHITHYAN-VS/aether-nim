@@ -1,0 +1,12 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>final_hd verify</title>
+<body style="background:#111;color:#eee;font-family:sans-serif">
+<h3>final_hd.mp4 — verify</h3>
+<video width="960" controls autoplay></video>
+<script>
+addEventListener('DOMContentLoaded', () => {
+  const v = document.querySelector('video');
+  if (v && !v.src) v.src = 'http://localhost:8901/final_hd.mp4';
+});
+</script>

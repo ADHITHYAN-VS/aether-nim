@@ -1,0 +1,59 @@
+{
+ "segments": [
+  {
+   "name": "s1",
+   "text": "Before a network service ships, someone should find out exactly where it breaks.",
+   "dur": 4.536,
+   "start": 0.0
+  },
+  {
+   "name": "s2",
+   "text": "AETHER-NIM is a crash-test lab for fiber networks. It starts healthy: seventeen nodes, twenty links, five demand pairs, held together by one number, algebraic connectivity: five point three seven.",
+   "dur": 13.656,
+   "start": 4.536
+  },
+  {
+   "name": "s3",
+   "text": "Now the gap. Dashboards show that something broke. Meetings decide what to do next. Hours pass. But the answer is already inside the graph.",
+   "dur": 8.952,
+   "start": 18.192
+  },
+  {
+   "name": "s4",
+   "text": "So we break it, for real. A bridge link fails. Lambda two collapses to exactly zero. Two islands form. Throughput craters. Measured, not imagined.",
+   "dur": 10.584,
+   "start": 27.144
+  },
+  {
+   "name": "s5",
+   "text": "Diagnosis runs two sources at once. A structured incident report goes to NVIDIA Nemotron on Nebius Token Factory. And at the exact same moment, the twin calls the Tavily Search API for live fiber-outage context from the real web.",
+   "dur": 15.456,
+   "start": 37.728
+  },
+  {
+   "name": "s6",
+   "text": "Nemotron returns root causes, a ranked repair plan, risks and confidence, as strict JSON. And you can see the live citations on screen.",
+   "dur": 9.288,
+   "start": 53.184
+  },
+  {
+   "name": "s7",
+   "text": "Now the rule. AI proposes. The engine disposes. Every proposed action is validated against the live graph, planned by a deterministic optimizer, with rollback armed.",
+   "dur": 10.944,
+   "start": 62.472
+  },
+  {
+   "name": "s8",
+   "text": "The repair executes. A separate verifier recomputes every metric from scratch: success. One component. Five out of five demand pairs. Throughput restored. In seconds, not hours.",
+   "dur": 12.576,
+   "start": 73.416
+  },
+  {
+   "name": "s9",
+   "text": "Every claim on this screen was measured, repaired and proven. AETHER-NIM. Trust, but verify, as software. Live demo and code below.",
+   "dur": 9.384,
+   "start": 85.992
+  }
+ ],
+ "total": 95.376
+}

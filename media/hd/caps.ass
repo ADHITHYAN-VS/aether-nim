@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1200
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, OutlineColour, BackColour, Bold, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV
+Style: Cap,Verdana,34,&H00FFFFFF,&H00000000,&H90000000,-1,3,3,0,2,90,90,56
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:04.54,Cap,,0,0,0,,Before a network service ships, someone should find out exactly where it breaks.
+Dialogue: 0,0:00:04.54,0:00:18.19,Cap,,0,0,0,,AETHER-NIM is a crash-test lab for fiber networks. It starts healthy: seventeen nodes, twenty links, five demand pairs, held together by one number, algebraic connectivity: five point three seven.
+Dialogue: 0,0:00:18.19,0:00:27.14,Cap,,0,0,0,,Now the gap. Dashboards show that something broke. Meetings decide what to do next. Hours pass. But the answer is already inside the graph.
+Dialogue: 0,0:00:27.14,0:00:37.73,Cap,,0,0,0,,So we break it, for real. A bridge link fails. Lambda two collapses to exactly zero. Two islands form. Throughput craters. Measured, not imagined.
+Dialogue: 0,0:00:37.73,0:00:53.18,Cap,,0,0,0,,Diagnosis runs two sources at once. A structured incident report goes to NVIDIA Nemotron on Nebius Token Factory. And at the exact same moment, the twin calls the Tavily Search API for live fiber-outage context from the real web.
+Dialogue: 0,0:00:53.18,0:01:02.47,Cap,,0,0,0,,Nemotron returns root causes, a ranked repair plan, risks and confidence, as strict JSON. And you can see the live citations on screen.
+Dialogue: 0,0:01:02.47,0:01:13.42,Cap,,0,0,0,,Now the rule. AI proposes. The engine disposes. Every proposed action is validated against the live graph, planned by a deterministic optimizer, with rollback armed.
+Dialogue: 0,0:01:13.42,0:01:25.99,Cap,,0,0,0,,The repair executes. A separate verifier recomputes every metric from scratch: success. One component. Five out of five demand pairs. Throughput restored. In seconds, not hours.
+Dialogue: 0,0:01:25.99,0:01:35.38,Cap,,0,0,0,,Every claim on this screen was measured, repaired and proven. AETHER-NIM. Trust, but verify, as software. Live demo and code below.
