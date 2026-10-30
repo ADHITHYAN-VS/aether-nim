@@ -10,6 +10,10 @@ const app = createApp({
   // same-origin /ai route (the real credential lives server-side only).
   NEBIUS_API_KEY: 'browser-via-proxy',
   NEBIUS_BASE_URL: '/api/ai',
+  // Same pattern for Tavily web-grounding: the embedded twin requests the
+  // same-origin /api/web proxy; the real credential stays on the server.
+  TAVILY_API_KEY: 'browser-via-proxy',
+  TAVILY_BASE_URL: '/api/web',
 });
 
 async function request(path: string, init: { method: string; body?: string }): Promise<Response> {

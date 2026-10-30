@@ -43,13 +43,18 @@ Key invariants (enforced by tests):
 - **Objective J** = 0.01·avgLatency + 400·unmetShare + 500·extraComponents + 50·Δλ2 (spectral deficit) + Σ repair costs. Cap-constrained demand is routed *before* scoring.
 - **Verifier** has its own criteria — a plan ships only after `verifyRecovery()` confirms at least one hard gate cleared or J materially dropped.
 
+## Web-grounded diagnosis (Tavily + Nemotron)
+
+At diagnosis time the twin also makes a **runtime call to the Tavily Search API** for live external context (recent fiber-cut/outage coverage, restoration best practice) and hands it to Nemotron next to the measured graph as `web_evidence`. The model may cite those source titles inside its root-cause hypotheses, but evidence can never override the engine's measurements or invent actions — every proposal is still re-validated and re-measured by the deterministic verifier. If Tavily is unavailable, diagnosis degrades gracefully to measured-data-only and the UI says so truthfully.
+
 ## Quick start (local)
 
 ```bash
 cp .env.example .env       # add your Nebius key (runs fine without one too)
+                           # optional: TAVILY_API_KEY for web-grounded diagnosis
 npm install
 npm run dev                # API on :8787 + Web on :5173
-npm test                   # 20 vitest suites (unit + integration + resilience)
+npm test                   # 23 vitest suites (unit + integration + resilience + web-grounding)
 npm run bench              # 18-case benchmark vs scripted baselines
 ```
 
@@ -58,10 +63,11 @@ npm run bench              # 18-case benchmark vs scripted baselines
 **Production:** https://aether-nim-vsadhithyan505-5634s-projects.vercel.app
 
 Deployed as a static dashboard plus one stateless serverless function: the whole
-twin (graph engine + API) ships in the page bundle, and the single `/api/ai`
-proxy keeps the Nebius credential server-side. Each viewer gets an isolated
-twin — click a damage preset, diagnose, recover, verify — the AI stage is
-*real* Nemotron on Nebius, not a mock.
+twin (graph engine + API) ships in the page bundle, and the `/api/ai` and
+`/api/web` proxies keep the Nebius and Tavily credentials server-side. Each
+viewer gets an isolated twin — click a damage preset, diagnose (with live
+Tavily web grounding), recover, verify — the AI stage is *real* Nemotron on
+Nebius, not a mock.
 
 ## Files
 

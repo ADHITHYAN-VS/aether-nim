@@ -60,6 +60,13 @@ export interface VerificationInfo {
   wallMs: number;
 }
 
+export interface WebInfo {
+  used: boolean;
+  query?: string;
+  count: number;
+  sources?: { title: string; url: string }[];
+}
+
 export interface StateResponse {
   scenario: { id: string; name: string; scenarios: { id: string; name: string; description: string }[]; damagePresets: string[] };
   topology: { nodes: ApiNode[]; edges: ApiEdge[]; demands: ApiDemand[]; revision: number };
@@ -71,6 +78,7 @@ export interface StateResponse {
   timeline: TimelineEvent[];
   objective: Record<string, unknown>;
   ai: { enabled: boolean; model: string };
+  web?: WebInfo | null;
 }
 
 export interface RecoverySummary {

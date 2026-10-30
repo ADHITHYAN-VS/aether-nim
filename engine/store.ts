@@ -1,5 +1,6 @@
 import type {
   GraphMetrics, RecoveryAction, RecoveryCandidate, RecoveryOutcome, TimelineEvent, TopologySnapshot, Stage, TwinState,
+  WebEvidenceItem, WebEvidenceSummary,
 } from './types.js';
 import { NetworkWorld } from './graph.js';
 import { computeMetrics } from './metrics.js';
@@ -21,6 +22,12 @@ function actionKey(a: RecoveryAction): string {
  * circular timeline; every metric comes from the engine; the AI stage is an
  * injected AIAdapter so the deterministic core never imports IO.
  */
+/**
+ * Optional live-web search hook (Tavily). The deterministic engine stays IO-free:
+ * like the AI adapter, the fetcher is injected from the transport layer.
+ */
+export type WebSearchHook = (query: string) => Promise<WebEvidenceItem[] | null>;
+
 export class Twin {
   world: NetworkWorld;
   healthyBaseline: GraphMetrics;
@@ -28,8 +35,9 @@ export class Twin {
   incidentSnapshot: { baseline: GraphMetrics; damaged: GraphMetrics } | null = null;
   lastRecovery: RecoveryOutcome | null = null;
   lastAI: AIResult | null = null;
+  lastWeb: WebEvidenceSummary | null = null;
 
-  constructor(public scenarioId: string, private ai: AIAdapter) {
+  constructor(public scenarioId: string, private ai: AIAdapter, private web?: WebSearchHook) {
     const s = scenarioById(scenarioId) ?? ALL_SCENARIOS[0];
     this.scenarioId = s.id;
     this.world = new NetworkWorld(s);
@@ -49,6 +57,7 @@ export class Twin {
     this.incidentSnapshot = null;
     this.lastRecovery = null;
     this.lastAI = null;
+    this.lastWeb = null;
     this.log('reset', 'Scenario reset to healthy state');
   }
 
@@ -115,9 +124,31 @@ export class Twin {
     const candidates = generateCandidates(this.world);
     this.log('candidates', `${candidates.length} feasible candidate action(s) identified`, candidates.map((c) => actionKey(c.action)));
 
+    // Optional live-web grounding: fetch external incident context before the
+    // model call so Nemotron can reason over both the measured graph and real-world
+    // reports. Failure here degrades gracefully — deterministic centers stay intact.
+    let webEvidence: WebEvidenceItem[] | null = null;
+    if (this.web && this.ai.enabled()) {
+      try {
+        webEvidence = await this.web(incidentQuery(incident));
+        this.lastWeb = {
+          used: !!webEvidence?.length,
+          query: incidentQuery(incident),
+          count: webEvidence?.length ?? 0,
+          sources: webEvidence?.map((w) => ({ title: w.title, url: w.url })),
+        };
+        if (webEvidence?.length) {
+          this.log('web_evidence', `Tavily runtime search returned ${webEvidence.length} source(s) of external incident context`, this.lastWeb);
+        }
+      } catch {
+        this.lastWeb = { used: false, count: 0 };
+        this.log('web_failed', 'Tavily lookup failed — continuing with measured graph only', undefined, 'fallback');
+      }
+    }
+
     let ai: AIResult | null = null;
     if (this.ai.enabled()) {
-      const prompt = buildAIPrompt(this.world, incident, candidates);
+      const prompt = buildAIPrompt(this.world, incident, candidates, webEvidence ?? undefined);
       this.log('ai_request', `Querying ${this.ai.modelId()} on Nebius Token Factory with the structured incident report`, prompt);
       ai = await this.ai.complete(prompt, this.world);
       if (ai.mode === 'real' && ai.parsed) {
@@ -199,13 +230,14 @@ export class Twin {
       incidentSnapshot: this.incidentSnapshot ? structuredClone(this.incidentSnapshot) : null,
       lastRecovery: this.lastRecovery,
       lastAI: this.lastAI,
+      lastWeb: this.lastWeb,
     };
   }
 
-  static restore(state: TwinState, ai: AIAdapter): Twin | null {
+  static restore(state: TwinState, ai: AIAdapter, web?: WebSearchHook): Twin | null {
     const scenario = scenarioById(state.scenarioId);
     if (!scenario) return null;
-    const twin = new Twin(state.scenarioId, ai);
+    const twin = new Twin(state.scenarioId, ai, web);
     const { nodes, edges, demands, appliedActions, revision } = state.world;
     if (!Array.isArray(nodes) || !Array.isArray(edges) || !Array.isArray(demands)) return null;
     twin.world.nodes = nodes;
@@ -218,6 +250,17 @@ export class Twin {
     twin.incidentSnapshot = state.incidentSnapshot ?? null;
     twin.lastRecovery = state.lastRecovery ?? null;
     twin.lastAI = (state.lastAI as AIResult | null) ?? null;
+    twin.lastWeb = (state.lastWeb as WebEvidenceSummary | null | undefined) ?? null;
     return twin;
   }
+}
+
+/** Turn the measured incident into a compact live-web query for Tavily runtime search. */
+function incidentQuery(incident: { summary: string; failedNodeIds: string[]; failedEdgeIds: string[]; degradedEdgeIds: string[] }): string {
+  const failKinds = [
+    incident.failedNodeIds.length ? `${incident.failedNodeIds.length} node outage` : '',
+    incident.failedEdgeIds.length ? `${incident.failedEdgeIds.length} link failure` : '',
+    incident.degradedEdgeIds.length ? `${incident.degradedEdgeIds.length} degraded links` : '',
+  ].filter(Boolean).join(', ');
+  return `fiber optic network incident short report ${failKinds || 'degradation'} root cause recovery recent news best practice`.replace(/\s+/g, ' ');
 }

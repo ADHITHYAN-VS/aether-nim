@@ -1,6 +1,6 @@
 import type {
   AIPrompt, GraphMetrics, IncidentReport, RecoveryAction, RecoveryCandidate,
-  RecoveryOutcome, RecoveryPlan, RecoveryVerification, ValidationIssue,
+  RecoveryOutcome, RecoveryPlan, RecoveryVerification, ValidationIssue, WebEvidenceItem,
 } from './types.js';
 import type { NetworkWorld } from './graph.js';
 import { computeMetrics } from './metrics.js';
@@ -394,9 +394,15 @@ export function topBottleneckNodes(m: GraphMetrics): { id: string; betweenness: 
     .map(([id, betweenness]) => ({ id, betweenness }));
 }
 
-export function buildAIPrompt(world: NetworkWorld, incident: IncidentReport, candidates: RecoveryCandidate[]): AIPrompt {
+export function buildAIPrompt(
+  world: NetworkWorld,
+  incident: IncidentReport,
+  candidates: RecoveryCandidate[],
+  webEvidence?: WebEvidenceItem[],
+): AIPrompt {
   return {
     scenarioId: world.scenario.id,
+    ...(webEvidence && webEvidence.length ? { web_evidence: webEvidence } : {}),
     graphSummary: {
       nodes: world.nodes.length,
       activeEdges: world.edges.filter((e) => e.state === 'up').length,

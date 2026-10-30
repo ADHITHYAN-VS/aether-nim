@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import GraphCanvas from './GraphCanvas.js';
-import type { StateResponse, Metrics, AIInfo, TimelineEvent, RecoverySummary } from './types.js';
+import type { StateResponse, Metrics, AIInfo, TimelineEvent, RecoverySummary, WebInfo } from './types.js';
 import { state as embeddedState, post as embeddedPost } from './twinApi.js';
 
 /** Embedded-first twin: the engine runs in the browser, /ai proxies the model. */
@@ -94,6 +94,7 @@ export default function App() {
           <ComparisonPanel rec={state.lastRecovery} />
           <RecoveryPanel rec={lastRec} />
           <AIPanel ai={ai} enabled={state.ai.enabled} />
+          <WebPanel web={state.web} />
           <TimelinePanel events={state.timeline} />
         </div>
       </div>
@@ -118,6 +119,7 @@ function Header({ state }: { state: StateResponse }) {
           last AI stage: {lastMode === 'real' ? 'REAL token-factory call' : lastMode === 'fallback' ? 'deterministic fallback' : '—'}
         </span>
         <span className="chip">scenario: {state.scenario.name}</span>
+        {state.web?.used && <span className="chip real" title={state.web.query ?? ''}>web-grounded: Tavily runtime search ({state.web.count} sources)</span>}
       </div>
     </>
   );
@@ -336,6 +338,30 @@ function AIPanel({ ai, enabled }: { ai: AIInfo | null; enabled: boolean }) {
             </div>
           )}
           {ai.error && <div className="hint" style={{ color: 'var(--warn)' }}>last attempt: {ai.error}</div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------- web evidence (Tavily) ---------------- */
+
+function WebPanel({ web }: { web: WebInfo | null | undefined }) {
+  return (
+    <div className="panel">
+      <h3>Web grounding <span className="chip">Tavily runtime API</span></h3>
+      {!web || !web.used ? (
+        <div className="hint">no live web evidence for the current incident — diagnosis runs on measured graph data alone{web && !web.used ? ' (Tavily lookup unavailable)' : ''}</div>
+      ) : (
+        <div>
+          <div className="hint">runtime search on diagnosis: <b>{web.query}</b> · {web.count} source(s)</div>
+          <div className="ai-quote">
+            {web.sources && web.sources.map((s, i) => (
+              <div key={i} style={{ fontSize: 12 }}>
+                − <a href={s.url} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>{s.title || s.url}</a>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

@@ -160,11 +160,13 @@ export interface TwinState {
   incidentSnapshot: { baseline: GraphMetrics; damaged: GraphMetrics } | null;
   lastRecovery: RecoveryOutcome | null;
   lastAI: unknown;
+  lastWeb?: WebEvidenceSummary | null;
 }
 
 export type Stage = 'reset' | 'failure_injected' | 'measured' | 'incident_detected'
   | 'diagnosis' | 'ai_request' | 'ai_response' | 'ai_failed'
   | 'candidates' | 'plan_built' | 'action_rejected'
+  | 'web_evidence' | 'web_failed'
   | 'verified' | 'scenario_switched';
 
 export interface TimelineEvent {
@@ -178,8 +180,25 @@ export interface TimelineEvent {
 
 /* -------- passed to the AI: compact report over the REAL measurements -------- */
 
+/* -------- optional web evidence (Tavily) fetched at diagnosis time -------- */
+
+export interface WebEvidenceItem {
+  title: string;
+  url: string;
+  snippet: string;
+}
+
+export interface WebEvidenceSummary {
+  used: boolean;
+  query?: string;
+  count: number;
+  sources?: { title: string; url: string }[];
+}
+
 export interface AIPrompt {
   scenarioId: string;
+  /** optional live-web context (via Tavily runtime search) for root-cause grounding */
+  web_evidence?: WebEvidenceItem[];
   graphSummary: {
     nodes: number;
     activeEdges: number;

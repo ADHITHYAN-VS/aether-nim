@@ -59,7 +59,12 @@ Additional rules:
 - Allowed action payloads (from the feasible list only):
   {"type":"RestoreEdge","edgeId":id} | {"type":"RestoreNode","nodeId":id} | {"type":"OpenCandidate","edgeId":id} | {"type":"Retune","edgeId":id,"toLatencyMs":number}
 - confidence is between 0 and 1.
-- The deterministic optimizer independently evaluates every action against the measured graph; incorrect proposals will be rejected.`;
+- The deterministic optimizer independently evaluates every action against the measured graph; incorrect proposals will be rejected.
+- The incident report may include a web_evidence section: short snippets from a live Tavily runtime search. Treat
+  web_evidence as EXTERNAL context that must never override the measured graph metrics. Use it only to
+  strengthen root_cause_hypotheses (e.g., known regional fiber cuts, congestion advisories) and cite
+  source URL titles inside those hypotheses when a snippet supports one. Never invent new actions,
+  node ids, edge ids, or measurements from web snippets.`;
 
 export class NebiusAdapter implements AIAdapter {
   private key: string | undefined;

@@ -1,19 +1,76 @@
 import { Hono, type Context } from 'hono';
 import type { GraphMetrics, RecoveryAction, TopologySnapshot, IncidentReport, RecoveryOutcome } from '../engine/types.js';
-import { Twin } from '../engine/store.js';
+import { Twin, type WebSearchHook } from '../engine/store.js';
 import { NebiusAdapter, DEFAULT_BASE_URL } from '../engine/ai.js';
 import { makeStoreAdapter } from './d1store.js';
 import { OBJECTIVE, actionCost, detectIncident } from '../engine/recovery.js';
+import type { WebEvidenceItem } from '../engine/types.js';
 
 export interface EnvConfig {
   NEBIUS_API_KEY?: string;
   NEBIUS_MODEL?: string;
   NEBIUS_BASE_URL?: string;
+  /** Optional Tavily runtime-search credential — enables live web-grounded diagnosis */
+  TAVILY_API_KEY?: string;
+  TAVILY_BASE_URL?: string;
   /** Optional D1 binding — present when deployed on Workers with durable state */
   DB?: unknown;
 }
 
 export type TwinEnv = { Bindings: EnvConfig };
+
+const TAVILY_DEFAULT_BASE = 'https://api.tavily.com';
+
+/**
+ * Build the optional Tavily web-search hook consumed by the Twin.
+ * - server mode (real key): direct runtime call to the Tavily Search API;
+ * - embedded/browser mode ('browser-via-proxy'): same-origin /api/web proxy so the
+ *   credential never ships to the client.
+ * All failures resolve to null — diagnosis never depends on the web stage.
+ */
+function makeWebHook(env: EnvConfig): WebSearchHook | undefined {
+  if (!env.TAVILY_API_KEY) return undefined;
+  const browserMode = env.TAVILY_API_KEY === 'browser-via-proxy';
+  const tavilyBase = (env.TAVILY_BASE_URL || TAVILY_DEFAULT_BASE).replace(/\/$/, '');
+
+  return async (query: string): Promise<WebEvidenceItem[] | null> => {
+    if (browserMode) {
+      // Ask the same-origin server route (which holds the real key server-side).
+      const res = await fetch('/api/web', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      });
+      if (!res.ok) return null;
+      const j = (await res.json()) as { evidence?: WebEvidenceItem[] };
+      return j.evidence ?? null;
+    }
+    const evidence = await fetchTavilyEvidence(tavilyBase, env.TAVILY_API_KEY as string, query);
+    return evidence;
+  };
+}
+
+async function fetchTavilyEvidence(base: string, apiKey: string, query: string, maxResults = 4): Promise<WebEvidenceItem[] | null> {
+  try {
+    const res = await fetch(`${base}/search`, {
+      method: 'POST',
+      signal: AbortSignal.timeout(10_000),
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, max_results: maxResults, search_depth: 'basic' }),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { results?: { title?: string; url?: string; content?: string }[] };
+    return (data.results ?? [])
+      .filter((r) => r.url)
+      .map((r) => ({
+        title: (r.title ?? '').slice(0, 120),
+        url: r.url as string,
+        snippet: (r.content ?? '').replace(/\s+/g, ' ').slice(0, 400),
+      }));
+  } catch {
+    return null;
+  }
+}
 
 export function createApp(env: EnvConfig): Hono {
   const ai = new NebiusAdapter({
@@ -21,16 +78,17 @@ export function createApp(env: EnvConfig): Hono {
     model: env.NEBIUS_MODEL,
     baseUrl: env.NEBIUS_BASE_URL,
   });
+  const web = makeWebHook(env);
   const store = makeStoreAdapter(env.DB as Parameters<typeof makeStoreAdapter>[0]);
 
   /** Per-request state lifecycle: load → (caller mutates) → save. */
   const loadTwin = async (): Promise<Twin> => {
     const state = await store.load();
     if (state) {
-      const tw = Twin.restore(state, ai);
+      const tw = Twin.restore(state, ai, web);
       if (tw) return tw;
     }
-    return new Twin('bridge-failure', ai);
+    return new Twin('bridge-failure', ai, web);
   };
   const saveTwin = (tw: Twin): Promise<void> => store.save(tw.serialize());
 
@@ -63,6 +121,19 @@ export function createApp(env: EnvConfig): Hono {
   app.post('/ai/*', proxyAI);
   app.post('/api/ai/*', proxyAI);
 
+  /**
+   * Stateless Tavily runtime-search proxy used by the embedded twin to ground the
+   * AI diagnosis in real-world web context. Mirrors the /ai credential pattern.
+   */
+  app.post('/web', async (c) => {
+    if (!web || env.TAVILY_API_KEY === 'browser-via-proxy') return c.json({ error: 'web search not configured' }, 503);
+    const body = await c.req.json<{ query?: string }>().catch(() => ({}) as { query?: string });
+    if (!body.query || typeof body.query !== 'string') return c.json({ error: 'query required' }, 400);
+    const evidence = await fetchTavilyEvidence(TAVILY_DEFAULT_BASE, env.TAVILY_API_KEY as string, body.query.slice(0, 400));
+    if (!evidence) return c.json({ error: 'web search upstream failed' }, 502);
+    return c.json({ evidence, source: 'tavily' });
+  });
+
   app.get('/health', (c) => c.json({
     status: 'ok',
     service: 'aether-nim',
@@ -91,6 +162,7 @@ export function createApp(env: EnvConfig): Hono {
       timeline: twin.timelineList().slice(0, 120),
       objective: OBJECTIVE,
       ai: { enabled: ai.enabled(), model: ai.modelId() },
+      web: twin.lastWeb,
       stateStore: store.kind,
     });
   });
@@ -101,7 +173,7 @@ export function createApp(env: EnvConfig): Hono {
     if (!body.id || !scenarios.some((s) => s.id === body.id)) {
       return c.json({ error: `unknown scenario id; valid: ${scenarios.map((s) => s.id).join(', ')}` }, 400);
     }
-    const twin = new Twin(body.id, ai);
+    const twin = new Twin(body.id, ai, web);
     await saveTwin(twin);
     return c.json({ ok: true, scenario: body.id });
   });
@@ -156,7 +228,7 @@ export function createApp(env: EnvConfig): Hono {
     const twin = await loadTwin();
     const { incident, candidates, ai: aiRes } = await twin.diagnose();
     await saveTwin(twin);
-    return c.json({ incident, candidates, ai: lastAISummary(twin, aiRes) });
+    return c.json({ incident, candidates, ai: lastAISummary(twin, aiRes), web: twin.lastWeb });
   });
 
   app.post('/api/recover', async (c) => {
@@ -210,6 +282,7 @@ function summarizeRecovery(twin: Twin, outcome: RecoveryOutcome) {
     metrics: twin.metrics(),
     actionCosts: outcome.plan.actions.map((a: RecoveryAction) => ({ action: a, cost: actionCost(a) })),
     ai: lastAISummary(twin),
+    web: twin.lastWeb,
     timeline: twin.timelineList().slice(0, 120),
   };
 }

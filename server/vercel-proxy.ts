@@ -20,6 +20,7 @@ const app = createApp({
   NEBIUS_API_KEY: process.env.NEBIUS_API_KEY,
   NEBIUS_MODEL: process.env.NEBIUS_MODEL,
   NEBIUS_BASE_URL: process.env.NEBIUS_BASE_URL,
+  TAVILY_API_KEY: process.env.TAVILY_API_KEY,
 });
 
 async function readBody(req: NodeReq): Promise<string> {
@@ -34,7 +35,9 @@ function resolveTarget(req: NodeReq): string {
   let pathname = url.pathname;
   const injected = url.searchParams.get('...p');
   if (injected) pathname = `/api/${injected}`;
-  return pathname.replace(/^\/api\/health$/, '/health').replace(/^\/api\/ai/, '/ai');
+  return pathname
+    .replace(/^\/api\/health$/, '/health')
+    .replace(/^\/api\/(ai|web)/, '/$1');
 }
 
 export default async function handler(req: NodeReq, res: NodeRes): Promise<void> {
