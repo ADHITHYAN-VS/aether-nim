@@ -12,6 +12,7 @@
     "build": "npm run build:web && npm run build:worker",
     "build:web": "vite build --config web/vite.config.ts",
     "build:worker": "esbuild worker/index.ts --bundle --platform=neutral --format=esm --outfile=dist/worker.js --external:*.wasm --minify",
+    "build:api": "esbuild server/vercel-proxy.ts --bundle --platform=node --format=esm --target=node20 --minify --outfile=api/[[...p]].js",
     "test": "vitest run",
     "test:watch": "vitest",
     "bench": "tsx benchmarks/run.ts",

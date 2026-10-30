@@ -2,7 +2,7 @@
  * Vercel Node function: stateless proxy for the browser-embedded twin's AI stage.
  * Forwards Token Factory /chat/completions requests with the server-held key.
  */
-import { createApp } from '../../server/app.js';
+import { createApp } from './app.js';
 
 type NodeReq = { url: string; headers: Record<string, string | string[] | undefined>; on?: unknown; [Symbol.asyncIterator]?: unknown };
 type NodeRes = { statusCode: number; setHeader(k: string, v: string): void; end(b: Uint8Array): void };

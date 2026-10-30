@@ -14,3 +14,6 @@ secrets/
 
 .vercel
 .env*
+
+api/[[...p]].js
+api/[[...p]].cjs
